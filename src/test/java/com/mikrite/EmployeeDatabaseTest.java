@@ -39,4 +39,15 @@ class EmployeeDatabaseTest {
             employeeDatabase.addEmployee(newEmployee);
         });
     }
+
+    @Test
+    @DisplayName("addEmployee() adds an employee successfully")
+    public void addEmployee_AddsEmployeeSuccessfully() {
+        // Arrange
+        var employeeDatabase = new EmployeeDatabase();
+        Employee employee = new Employee(1, "David", "Miko", LocalDate.of(1968,5,28), 25000);
+
+        // Act + Assert
+        employeeDatabase.addEmployee(employee);
+    }
 }
