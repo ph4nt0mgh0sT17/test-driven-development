@@ -1,5 +1,6 @@
 package com.mikrite;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,5 +25,16 @@ public class EmployeeDatabase {
         if (_employees.contains(employee)) {
             throw new IllegalStateException("The employee with id " + employee.getId() + " already exists in the database.");
         }
+    }
+
+    public Employee getEmployee(long id) {
+        if (id < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        return _employees.stream()
+                .filter(employee -> employee.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 }
