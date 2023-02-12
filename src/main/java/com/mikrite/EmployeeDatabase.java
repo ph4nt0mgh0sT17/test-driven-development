@@ -1,8 +1,8 @@
 package com.mikrite;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class EmployeeDatabase {
     private final List<Employee> _employees;
@@ -11,11 +11,11 @@ public class EmployeeDatabase {
         _employees = new ArrayList<>();
     }
 
-    public EmployeeDatabase(List<Employee> employees) {
+    EmployeeDatabase(List<Employee> employees) {
         if (employees == null)
             throw new IllegalArgumentException("The 'employees' cannot be null.");
 
-        _employees = employees;
+        _employees = new ArrayList<>(employees);
     }
 
     public void addEmployee(Employee employee) {
@@ -27,14 +27,35 @@ public class EmployeeDatabase {
         }
     }
 
-    public Employee getEmployee(long id) {
+    public Employee findEmployeeById(long id) {
         if (id < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The employee ID cannot be negative.");
         }
 
         return _employees.stream()
                 .filter(employee -> employee.getId() == id)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Employee findEmployee(Predicate<Employee> predicate) {
+        if (predicate == null) {
+            throw new IllegalArgumentException("The 'predicate' cannot be null.");
+        }
+
+        return _employees.stream()
+                .filter(predicate)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Employee> findEmployees(Predicate<Employee> predicate) {
+        if (predicate == null) {
+            throw new IllegalArgumentException("The 'predicate' cannot be null.");
+        }
+
+        return _employees.stream()
+                .filter(predicate)
+                .toList();
     }
 }
